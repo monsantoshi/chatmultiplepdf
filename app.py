@@ -65,7 +65,7 @@ def get_conversational_chain():
 def user_input(user_question):
     embeddings = GoogleGenerativeAIEmbeddings(model = "models/embedding-001")
     
-    new_db = FAISS.load_local("faiss_index", embeddings)
+    new_db = FAISS.load_local("faiss_index", embeddings,allow_dangerous_deserialization=True)
     docs = new_db.similarity_search(user_question)
 
     chain = get_conversational_chain()
@@ -97,7 +97,7 @@ def main():
             with st.spinner("Processing..."):
                 raw_text = get_pdf_text(pdf_docs)
                 text_chunks = get_text_chunks(raw_text)
-                get_vector_store(text_chunks, allow_dangerous_deserialization=True)
+                get_vector_store(text_chunks)
                 st.success("Done")
 
 
